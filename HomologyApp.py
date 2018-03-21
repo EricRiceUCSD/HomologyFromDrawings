@@ -1,5 +1,4 @@
 from tkinter import *
-import random
 from PIL import Image
 import HomologyFunctions as funcs
 

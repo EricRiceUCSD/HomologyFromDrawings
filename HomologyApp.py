@@ -82,14 +82,6 @@ prompt.pack(side=TOP)
 outputLabel = Label(rightFrame, text="")
 outputLabel.pack(side=BOTTOM)
 
-##closestMatchLabel = Label(rightFrame, text="")
-##closestMatchLabel.pack()
-##closestMatchDisplay = Canvas(rightFrame,
-##                             width=200,
-##                             height=200,
-##                             highlightbackground="black")
-##closestMatchDisplay.pack()
-
 bettiLabel = Label(rightFrame, text="")
 bettiLabel.pack()
 bettiNumbers = Canvas(rightFrame,
@@ -106,8 +98,6 @@ def submit(event=None):
     global drawing
     global rightFrame
     global outputLabel
-##    global closestMatchLabel
-##    global closestMatchDisplay
     global bettiLabel
     global bettiNumbers
     global componentHoles
@@ -127,14 +117,6 @@ def submit(event=None):
         outputLabel.config(text="Your drawing has "+str(K.betti()[1])+" hole.")
     else:
         outputLabel.config(text="Your drawing has "+str(K.betti()[1])+" holes.")
-
-##    closestMatch = funcs.guessNumber(funcs.splitByComponent(K))
-##    closestMatchLabel.config(text="Your drawing is "+\
-##                          "interpreted to be the number:")
-##    closestMatchDisplay.delete("all")
-##    closestMatchDisplay.create_text(100, 100, anchor=CENTER,
-##                                    font=("Times New Roman", 100, "bold"),
-##                                    text=closestMatch)
 
     bettiString = ""
     for p in range(0, min(6, len(K.betti()))):
@@ -169,8 +151,6 @@ def clear(event=None):
     
     drawing.delete("all")
     outputLabel.config(text="")
-##    closestMatchLabel.config(text="")
-##    closestMatchDisplay.delete("all")
     bettiLabel.config(text="")
     bettiNumbers.delete("all")
     componentHoles.config(text="")

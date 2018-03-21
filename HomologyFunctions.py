@@ -294,120 +294,18 @@ def splitByComponent(K):
 
     return C
 
-# Not used, doesn't really work very well  
-def guessNumber(C):
-    """Given a list of disjoint, connected plane complexes,
-    attempts to interpret what number they most resemble."""
-
-    beta = []
-    for i in range(0, len(C)):
-        beta += [C[i].betti()]
-
-    # Generates a list order of indices so that
-    # C[order[0]] is the leftmost complex (based on
-    # the smallest x-coordinate of a vertex) and
-    # C[order[i]] is further left than C[order[j]]
-    # if and only if i < j.
-
-    mins = []   # list to keep track of smallest x coordinates
-    for i in range(0, len(C)):
-        leftest = C[i].complex[0][0][0][0]
-        for k in range(0, len(C[i].complex[0])):
-            if C[i].complex[0][k][0][0] < leftest:
-                leftest = C[i].complex[0][k][0][0]
-        mins += [leftest]
-
-    order = []
-    for i in range(0, len(C)):
-        a = min(mins)
-        order += [mins.index(a) + i]
-        del mins[mins.index(a)]
-    
-    digit = []
-    for i in range(0, len(C)):
-        if beta[order[i]][1] == 2:
-            digit += ["8"]
-        elif beta[order[i]][1] > 2:
-            digit += ["?"]
-        else:
-            # We count the intersections of a horizontal line
-            # with the complex as we scan from y = 0 and increase y.
-
-            max_x = 0
-            max_y = 0
-            for j in range(0, len(C[order[i]].complex[0])):
-                if C[order[i]].complex[0][j][0][0] > max_x:
-                    max_x = C[order[i]].complex[0][j][0][0]
-                if C[order[i]].complex[0][j][0][1] > max_y:
-                    max_y = C[order[i]].complex[0][j][0][1]
-
-            inters = []
-            for y in range(0, max_y):
-                accum = 0
-                for x in range(0, max_x, 5):
-                    for j in range(0, len(C[order[i]].complex[0])):
-                        if C[order[i]].complex[0][j][0] == (x, y) or\
-                            C[order[i]].complex[0][j][0] == (x + 1, y) or\
-                            C[order[i]].complex[0][j][0] == (x + 2, y) or\
-                            C[order[i]].complex[0][j][0] == (x + 3, y) or\
-                            C[order[i]].complex[0][j][0] == (x + 4, y):
-                            accum += 1
-                inters += [accum]
-
-            if beta[order[i]][1] == 1:
-                if 2 in inters:
-                    if inters[0:inters.index(2)].count(1) >= 3:
-                        digit += ["6"]
-                    elif inters[inters.index(2):].count(1) >= 3:
-                        digit += ["9"]
-                    else:
-                        digit += ["0"]
-                else:
-                    digit += ["?"]
-            elif beta[order[i]][1] == 0:
-                if max(inters) < 2:
-                    digit += ["1"]
-                elif 1 in inters and 2 in inters and\
-                  inters.index(2) > inters.index(1):
-                    digit += ["4"]
-                elif 1 in inters and max(inters) > 2:
-                    if inters.index(max(inters)) < inters.index(1):
-                        digit += ["2"]
-                    elif 3 in inters:
-                        digit += ["5"]
-                    elif 2 not in inters:
-                        digit += ["7"]
-                    elif 2 in inters:
-                        digit += ["3"]
-                    else:
-                        digit += ["?"]
-                else:
-                    digit += ["?"]
-            else:
-                digit += ["?"]
-
-    num = ""
-    for i in range(0, len(digit)):
-        num += digit[i]
-
-    if "?" in num or len(num) != len(C):
-        return "?"
-    else:
-        return num
-    
-
 # --- Tests --- #
     
 ##vals = getValsByCoord("CanvasPNG.png")
 ##
 ##b = 20
+##r = 0.8
 ##S = getReducedVertexSet(vals, b)
-##S = [((0, 1),), ((0, 0),), ((1, 0),)]   # triangle
-##S = [((1, 0),), ((sqrt(2)/2, sqrt(2)/2),), ((0, 1),),\   # empty circle
+##S = [((0, 1),), ((0, 0),), ((1, 0),)]                                        # triangle
+##S = [((1, 0),), ((sqrt(2)/2, sqrt(2)/2),), ((0, 1),),\                       # empty circle
 ##     ((-sqrt(2)/2, sqrt(2)/2),), ((-1, 0),), ((-sqrt(2)/2, -sqrt(2)/2),),\
 ##     ((0, -1),), ((sqrt(2)/2, -sqrt(2)/2),)]
-##S = [((0, 0, 0),), ((1, 0, 0),), ((0, 1, 0),), ((0, 0, 1),)]   # tetrahedron
+##S = [((0, 0, 0),), ((1, 0, 0),), ((0, 1, 0),), ((0, 0, 1),)]                 # tetrahedron
 ##
-##r = 1
 ##K = CechComplex(S, r)
 ##C = splitByComponent(K)
